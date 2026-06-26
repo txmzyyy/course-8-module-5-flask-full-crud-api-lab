@@ -18,31 +18,31 @@ events = [
 ]
 
 #GET method
-@app.route('/events' methods=["GET"])
+@app.route('/events', methods=["GET"])
 def get_event():
     return (jsonify([event.to_dict()for event in events]), 200)
 
 @app.route('/events/<int:id>', methods=["GET"])
 def get_event(id)
-    event = next([e for e in events if e.id == id], None)
+    event = next((e for e in events if e.id == id), None)
     return jsonify(event.to_dict()) if event else ("Event not found", 404)
 
 
 # Create a new event from JSON input
 @app.route("/events", methods=["POST"])
 def create_event():
-    data = request.get.json()
+    data = request.get_json()
     new_id = max((e.id for e in events), default=0) + 1
     new_event = Event(id=new_id, title=data["title"])
     events.append(new_event)
-    return jsonify(new_event.to_dict), 201
+    return jsonify(new_event.to_dict()), 201
     
 
 # Update the title of an existing event
 @app.route("/events/<int:event_id>", methods=["PATCH"])
 def update_event(event_id):
-    data= request.get.json()
-    event = next((e for e in events if e.id == id), None)
+    data= request.get_json()
+    event = next((e for e in events if e.id == event_id), None)
     if not event:
         return("Event not found", 404)
     if "title" in data:
@@ -57,7 +57,7 @@ def delete_event(event_id):
     event = next((e for e in events if e.id == id), None)
     if not event:
         return ("Event not found", 404)
-    events = [e for e in events != id ]
+    events = [e for e in events != event_id ]
     return "", 204
 
 
