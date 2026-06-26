@@ -17,6 +17,17 @@ events = [
     Event(2, "Python Workshop")
 ]
 
+#GET method
+@app.route('/events' methods=["GET"])
+def get_event():
+    return (jsonify([event.to_dict()for event in events]), 200)
+
+@app.route('/events/<int:id>', methods=["GET"])
+def get_event(id)
+    event = next([e for e in events if e.id == id], None)
+    return jsonify(event.to_dict()) if event else ("Event not found", 404)
+
+
 # Create a new event from JSON input
 @app.route("/events", methods=["POST"])
 def create_event():
